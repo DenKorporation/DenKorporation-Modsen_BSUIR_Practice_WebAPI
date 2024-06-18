@@ -10,7 +10,6 @@ public class OrderItem
 
     public uint Quantity { get; set; }
     
-    
     public Product Product { get; set; } = null!;
 
     public Order Order { get; set; } = null!;

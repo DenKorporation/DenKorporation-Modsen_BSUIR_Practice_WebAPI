@@ -8,6 +8,5 @@ public class User
 
     public string Email { get; set; } = null!;
     
-    
     private ICollection<Order> Orders { get; set; } = null!;
 }

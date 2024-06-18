@@ -16,7 +16,6 @@ public class Order
     
     public OrderStatus OrderStatus { get; set; }
     
-    
     public User Customer { get; set; } = null!;
     
     public ICollection<OrderItem> OrderItems { get; set; } = null!;

@@ -13,7 +13,6 @@ public class Product
     public uint AvailableStock { get; set; }
     
     public Guid CategoryId { get; set; }
-    
 
     public Category Category { get; set; } = null!;
     
