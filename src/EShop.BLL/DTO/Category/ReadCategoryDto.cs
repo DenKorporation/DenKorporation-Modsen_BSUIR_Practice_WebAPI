@@ -1,0 +1,8 @@
+﻿namespace EShop.BLL.DTO.Category;
+
+public class ReadCategoryDto
+{
+    public Guid Id { get; set; }
+    
+    public string Name { get; set; } = null!;
+}

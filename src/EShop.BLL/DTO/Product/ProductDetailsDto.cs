@@ -1,6 +1,9 @@
-namespace EShop.DAL.Entities;
+﻿using EShop.BLL.DTO.Category;
+using EShop.BLL.DTO.OrderItem;
 
-public class Product
+namespace EShop.BLL.DTO.Product;
+
+public class ProductDetailsDto
 {
     public Guid Id { get; set; }
     
@@ -13,8 +16,8 @@ public class Product
     public uint AvailableStock { get; set; }
     
     public Guid CategoryId { get; set; }
-
-    public Category Category { get; set; } = null!;
     
-    public ICollection<OrderItem> OrderItems { get; set; } = null!;
+    public ReadCategoryDto Category { get; set; } = null!;
+    
+    public ICollection<ReadOrderItemDto> OrderItems { get; set; } = null!;
 }
