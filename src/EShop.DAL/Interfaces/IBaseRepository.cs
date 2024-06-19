@@ -12,6 +12,6 @@ public interface IBaseRepository<TEntity, TKey>
     Task<TEntity> GetByIdAsync(TKey id);
     Task Update(TEntity entity);
     Task Delete(TKey id);
-
     Task<IEnumerable<TEntity>> GetAll();
+    Task<IEnumerable<TEntity>> Filter(Func<TEntity, bool> predicate);
 }
