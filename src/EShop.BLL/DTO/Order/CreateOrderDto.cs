@@ -14,6 +14,6 @@ public class CreateOrderDto
     public Guid CustomerId { get; set; }
     
     public OrderStatus OrderStatus { get; set; }
-    
-    public ICollection<CreateOrderItemDto> OrderItems { get; set; } = new List<CreateOrderItemDto>();
+
+    public ICollection<CreateOrderItemDto> OrderItems { get; set; } = null!;
 }

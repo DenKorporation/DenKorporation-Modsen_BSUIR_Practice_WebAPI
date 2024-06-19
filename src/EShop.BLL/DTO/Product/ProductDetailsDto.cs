@@ -19,5 +19,5 @@ public class ProductDetailsDto
     
     public ReadCategoryDto Category { get; set; } = null!;
     
-    public ICollection<ReadOrderItemDto> OrderItems { get; set; } = new List<ReadOrderItemDto>();
+    public ICollection<ReadOrderItemDto> OrderItems { get; set; } = null!;
 }

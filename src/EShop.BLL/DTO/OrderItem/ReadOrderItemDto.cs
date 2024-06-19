@@ -6,5 +6,7 @@ public class ReadOrderItemDto
     
     public Guid ProductId { get; set; }
     
+    public Guid OrderId { get; set; }
+    
     public uint Quantity { get; set; }
 }
