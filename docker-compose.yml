@@ -1,0 +1,14 @@
+﻿name: eshop
+
+services:
+  database:
+    image: postgres:16
+    restart: always
+    environment:
+      - POSTGRES_DB=eshop
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - .containers/metro-db:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
