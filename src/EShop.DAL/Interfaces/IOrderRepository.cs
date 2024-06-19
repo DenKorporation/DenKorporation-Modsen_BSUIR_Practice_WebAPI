@@ -2,13 +2,7 @@
 
 namespace EShop.DAL.Interfaces;
 
-internal interface IOrderRepository
+internal interface IOrderRepository: IBaseRepository<Order, int>
 {
-    Task<Order> AddOrder(Order order);
-    Task<Order> UpdateOrder(Order order);
-    Task<Order> GetOrderById(int id);
-    Task DeleteOrderById(int id);
-
-    Task<IEnumerable<Order>> GetAllOrder();
     Task<IEnumerable<Order>> GetOrdersByUser(User user);
 }

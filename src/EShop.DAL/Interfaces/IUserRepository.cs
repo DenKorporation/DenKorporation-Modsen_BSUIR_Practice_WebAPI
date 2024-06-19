@@ -2,12 +2,7 @@
 
 namespace EShop.DAL.Interfaces;
 
-public interface IUserRepository
+public interface IUserRepository: IBaseRepository<User, int>
 {
-    Task<User> AddUser(User user);
-    Task<User> UpdateUser(User user);
-    Task<User> GetUserById(int id);
-    Task DeleteUserById(int id);
 
-    Task<IEnumerable<User>> GetAllUser();
 }
