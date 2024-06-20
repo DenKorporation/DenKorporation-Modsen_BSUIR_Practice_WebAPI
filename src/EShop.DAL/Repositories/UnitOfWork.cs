@@ -2,7 +2,7 @@
 
 public class UnitOfWork : IDisposable
 {
-    private EshopContext _appDbContext = new EshopContext();
+    private EShopContext _appDbContext = new EShopContext();
 
     private CategoryRepository _categoryRepository;
     
