@@ -12,11 +12,6 @@ public class OrderItemEntityTypeConfiguration : IEntityTypeConfiguration<OrderIt
             .HasKey(oi => oi.Id);
 
         builder
-            .Property(oi => oi.Id)
-            .ValueGeneratedOnAdd()
-            .IsRequired();
-
-        builder
             .Property(oi => oi.Quantity)
             .IsRequired();
 

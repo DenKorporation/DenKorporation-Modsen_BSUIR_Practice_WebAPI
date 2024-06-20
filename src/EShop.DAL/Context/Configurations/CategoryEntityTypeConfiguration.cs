@@ -12,11 +12,6 @@ public class CategoryEntityTypeConfiguration : IEntityTypeConfiguration<Category
             .HasKey(c => c.Id);
 
         builder
-            .Property(c => c.Id)
-            .ValueGeneratedOnAdd()
-            .IsRequired();
-
-        builder
             .Property(c => c.Name)
             .HasMaxLength(100)
             .IsRequired();
