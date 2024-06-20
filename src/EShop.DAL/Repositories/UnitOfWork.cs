@@ -64,9 +64,9 @@ public class UnitOfWork : IDisposable
         }
     }
 
-    public async void Save()
+    public async void SaveСhangesAsync(CancellationToken cancellationToken = default)
     {
-        await _appDbContext.SaveChangesAsync();
+        await _appDbContext.SaveChangesAsync(cancellationToken);
     }
 
     private bool _disposed = false;

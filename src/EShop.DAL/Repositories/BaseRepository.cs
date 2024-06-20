@@ -15,38 +15,36 @@ public abstract class BaseRepository<TEntity, TKey> : IBaseRepository<TEntity, T
         _dbSet = _context.Set<TEntity>();
     }
 
-    public virtual async Task<TEntity> Add(TEntity entity)
+    public virtual async Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
-        await _dbSet.AddAsync(entity);
+        await _dbSet.AddAsync(entity, cancellationToken);
         return entity;
     }
 
-    public virtual async Task<TEntity> GetByIdAsync(TKey id)
+    public virtual async Task<TEntity> GetByIdAsync(TKey id, CancellationToken cancellationToken = default)
     {
-        return await _dbSet.FindAsync(id);
+        return await _dbSet.AsNoTracking().SingleOrDefaultAsync(e=> e.Id == id, cancellationToken);
     }
 
-    public virtual async Task Update(TEntity entity)
+    public virtual Task Update(TEntity entity)
     {
         _dbSet.Update(entity);
+        return Task.CompletedTask;
     }
 
-    public virtual async Task Delete(TKey id)
+    public virtual async Task DeleteAsync(TKey id, CancellationToken cancellationToken = default)
     {
-        var entity = await _dbSet.FindAsync(id);
-        if (entity != null)
-        {
-            _dbSet.Remove(entity);
-        }
+        var entity = await _dbSet.FindAsync(id, cancellationToken);
+        _dbSet.Remove(entity);
     }
 
-    public virtual async Task<IEnumerable<TEntity>> GetAll()
+    public virtual async Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        return await _dbSet.ToListAsync();
+        return await _dbSet.AsNoTracking().ToListAsync(cancellationToken);
     }
 
-    public virtual async Task<IEnumerable<TEntity>> Filter(Func<TEntity, bool> predicate)
+    public virtual async Task<IEnumerable<TEntity>> FilterAsync(Func<TEntity, bool> predicate, CancellationToken cancellationToken = default)
     {
-        return await Task.FromResult(_dbSet.Where(predicate).ToList());
+        return await Task.FromResult(_dbSet.AsNoTracking().Where(predicate).ToListAsync(cancellationToken));
     }
 }
