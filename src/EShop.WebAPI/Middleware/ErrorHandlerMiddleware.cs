@@ -6,13 +6,20 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EShop.WebAPI.Middleware;
 
-public class ErrorHandlerMiddleware : IMiddleware
+public class ErrorHandlerMiddleware
 {
-    public async Task InvokeAsync(HttpContext context, RequestDelegate next)
+    private readonly RequestDelegate _next;
+
+    public ErrorHandlerMiddleware(RequestDelegate next)
+    {
+        _next = next;
+    }
+    
+    public async Task InvokeAsync(HttpContext context)
     {
         try
         {
-            await next(context);
+            await _next(context);
         }
         catch (Exception exception)
         {
