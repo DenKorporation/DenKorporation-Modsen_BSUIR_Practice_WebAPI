@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using EShop.DAL.Entities;
-namespace EShop.WebAPI.Validators;
+
+namespace EShop.BLL.Validators;
 
 public class UserValidator: AbstractValidator<User>
 {
