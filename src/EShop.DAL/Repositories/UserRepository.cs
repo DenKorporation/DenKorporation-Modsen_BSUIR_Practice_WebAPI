@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EShop.DAL.Repositories;
 
-public class UserRepository :BaseRepository<User, int>, IUserRepository
+public class UserRepository :BaseRepository<User, Guid>, IUserRepository
 {
     public UserRepository(EShopContext context) : base(context)
     {
