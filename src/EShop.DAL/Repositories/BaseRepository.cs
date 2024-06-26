@@ -50,8 +50,6 @@ public abstract class BaseRepository<TEntity, TKey> : IBaseRepository<TEntity, T
         return await Task.FromResult(_dbSet.AsNoTracking().Where(predicate).ToList());
     }
 
-    public virtual async Task<TEntity?> GetDetailsByIdAsync(TKey id, CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
+    public abstract  Task<TEntity?> GetDetailsByIdAsync(TKey id, CancellationToken cancellationToken = default);
+
 }
