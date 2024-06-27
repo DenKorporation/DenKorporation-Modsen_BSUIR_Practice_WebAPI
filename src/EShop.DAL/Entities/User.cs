@@ -1,12 +1,8 @@
+using Microsoft.AspNetCore.Identity;
+
 namespace EShop.DAL.Entities;
 
-public class User
+public class User : IdentityUser<Guid>
 {
-    public Guid Id { get; set; }
-
-    public string Name { get; set; } = null!;
-
-    public string Email { get; set; } = null!;
-    
     public ICollection<Order> Orders { get; set; } = null!;
 }
