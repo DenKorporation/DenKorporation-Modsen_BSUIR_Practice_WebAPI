@@ -7,21 +7,20 @@ using FluentValidation;
 
 namespace EShop.BLL.Services;
 
-public class ProductService(IMapper mapper, IUnitOfWork unitOfWork,AbstractValidator<Product> validator) : IProductService
+public class ProductService(IMapper mapper, IUnitOfWork unitOfWork,AbstractValidator<CreateProductDto> validator) : IProductService
 {
     public async Task<ReadProductDto?> CreateProductAsync(CreateProductDto productDto, CancellationToken cancellationToken = default)
     {
         if (productDto == null) throw new ArgumentNullException(nameof(productDto));
-
-        var product = mapper.Map<Product>(productDto);
-
-        var validationResult = await validator.ValidateAsync(product);
+        
+        var validationResult = await validator.ValidateAsync(productDto);
 
         if (!validationResult.IsValid)
         { throw new Exception("Product data has not been validated");
            
         }
-
+        
+        var product = mapper.Map<Product>(productDto);
         var createdProduct = await unitOfWork.Products.AddAsync(product, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);
         return mapper.Map<ReadProductDto>(createdProduct);
@@ -36,9 +35,9 @@ public class ProductService(IMapper mapper, IUnitOfWork unitOfWork,AbstractValid
     public async Task<ReadProductDto?> UpdateProductAsync(Guid id, CreateProductDto productDto, CancellationToken cancellationToken = default)
     {
         if (productDto == null) throw new ArgumentNullException(nameof(productDto));
-        var product = mapper.Map<Product>(productDto);
 
-        var validationResult = await validator.ValidateAsync(product);
+
+        var validationResult = await validator.ValidateAsync(productDto);
 
         if (!validationResult.IsValid)
         {
@@ -50,7 +49,8 @@ public class ProductService(IMapper mapper, IUnitOfWork unitOfWork,AbstractValid
         {
             return null;
         }
-
+        
+        var product = mapper.Map<Product>(productDto);
         productDb.Name = product.Name;
         productDb.CategoryId = product.CategoryId;
         productDb.Description = product.Description;
