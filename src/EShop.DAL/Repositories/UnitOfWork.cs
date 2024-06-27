@@ -1,8 +1,10 @@
-﻿namespace EShop.DAL.Repositories;
+﻿using EShop.DAL.Context;
+using EShop.DAL.Interfaces;
 
-public class UnitOfWork : IDisposable
+namespace EShop.DAL.Repositories;
+
+public class UnitOfWork(EShopContext _appDbContext) : IUnitOfWork
 {
-    private EShopContext _appDbContext = new EShopContext();
 
     private CategoryRepository _categoryRepository;
     
@@ -13,58 +15,14 @@ public class UnitOfWork : IDisposable
     private ProductRepository _productRepository;
     
     private UserRepository _userRepository;
-
-    public CategoryRepository Categories
-    {
-        get
-        {
-            if (_categoryRepository == null)
-                _categoryRepository = new CategoryRepository(_appDbContext);
-            return _categoryRepository;
-        }
-    }
     
-    public OrderRepository Orders
-    {
-        get
-        {
-            if (_orderRepository == null)
-                _orderRepository = new OrderRepository(_appDbContext);
-            return _orderRepository;
-        }
-    }
+    public ICategoryRepository Categories => _categoryRepository ??= new CategoryRepository(_appDbContext);
+    public IOrderRepository Orders => _orderRepository ??= new OrderRepository(_appDbContext);
+    public IOrderItemRepository OrderItems => _orderItemRepository ??= new OrderItemRepository(_appDbContext);
+    public IProductRepository Products => _productRepository ??= new ProductRepository(_appDbContext);
+    public IUserRepository Users => _userRepository ??= new UserRepository(_appDbContext);
     
-    public OrderItemRepository OrderItems
-    {
-        get
-        {
-            if (_orderItemRepository == null)
-                _orderItemRepository = new OrderItemRepository(_appDbContext);
-            return _orderItemRepository;
-        }
-    }
-    
-    public ProductRepository Products
-    {
-        get
-        {
-            if (_productRepository == null)
-                _productRepository = new ProductRepository(_appDbContext);
-            return _productRepository;
-        }
-    }
-    
-    public UserRepository Users
-    {
-        get
-        {
-            if (_userRepository == null)
-                _userRepository = new UserRepository(_appDbContext);
-            return _userRepository;
-        }
-    }
-
-    public async void SaveСhangesAsync(CancellationToken cancellationToken = default)
+    public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         await _appDbContext.SaveChangesAsync(cancellationToken);
     }
