@@ -18,7 +18,7 @@ public class OrderDetailsDto
     
     public OrderStatus OrderStatus { get; set; }
     
-    public CreateUserDto Customer { get; set; } = null!;
+    public RegisterUserDto Customer { get; set; } = null!;
 
     public ICollection<OrderItemDetailsDto> OrderItems { get; set; } = null!;
 }

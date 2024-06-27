@@ -1,4 +1,6 @@
-﻿using EShop.BLL.DTO.User;
+﻿using System.Security.Claims;
+using EShop.BLL.DTO.User;
+using EShop.BLL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EShop.WebAPI.Controllers;
@@ -7,27 +9,34 @@ namespace EShop.WebAPI.Controllers;
 [ApiController]
 public class AuthController : ControllerBase
 {
-    [HttpPost("register")]
-    public Task<IActionResult> Register([FromBody] CreateUserDto model)
+    private readonly IUserService _userService;
+    private readonly IJwtCreationService _jwtCreationService;
+    
+    public AuthController(IUserService userService, IJwtCreationService jwtCreationService)
     {
-        throw new NotImplementedException();
+        _userService = userService;
+        _jwtCreationService = jwtCreationService;
+    }
+    
+    
+    [HttpPost("register")]
+    public async Task<IActionResult> RegisterAsync(
+        [FromBody] RegisterUserDto model, CancellationToken cancellationToken = default)
+    {
+        var user = await _userService.Register(model, cancellationToken);
+
+        return Ok(user);
     }
 
     [HttpPost("login")]
-    public Task<IActionResult> Login()
+    public async Task<IActionResult> LoginAsync([FromBody] LoginUserDto model, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
-    }
+        var loggedUser = await _userService.Login(model, cancellationToken);
 
-    [HttpPost("logout")]
-    public Task<IActionResult> Logout()
-    {
-        throw new NotImplementedException();
-    }
+        var claims = new ClaimsIdentity();
+        
+        var token = _jwtCreationService.GenerateToken(claims);
 
-    [HttpPost("refresh-token")]
-    public Task<IActionResult> RefreshToken()
-    {
-        throw new NotImplementedException();
+        return Ok("Bearer " + token);
     }
 }
