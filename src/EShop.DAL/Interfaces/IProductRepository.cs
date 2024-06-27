@@ -2,6 +2,6 @@
 
 namespace EShop.DAL.Interfaces;
 
-public interface IProductRepository: IBaseRepository<Product, int>
+public interface IProductRepository: IBaseRepository<Product, Guid>
 {
 }

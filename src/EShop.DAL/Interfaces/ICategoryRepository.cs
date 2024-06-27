@@ -2,6 +2,6 @@
 
 namespace EShop.DAL.Interfaces;
 
-public interface ICategoryRepository : IBaseRepository<Category, int>
+public interface ICategoryRepository : IBaseRepository<Category, Guid>
 {
 }

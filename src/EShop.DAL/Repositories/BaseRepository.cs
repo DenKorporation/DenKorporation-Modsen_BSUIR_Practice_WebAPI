@@ -23,7 +23,7 @@ public abstract class BaseRepository<TEntity, TKey> : IBaseRepository<TEntity, T
         return entity;
     }
 
-    public virtual async Task<TEntity> GetByIdAsync(TKey id, CancellationToken cancellationToken = default)
+    public virtual async Task<TEntity?> GetByIdAsync(TKey id, CancellationToken cancellationToken = default)
     {
         return await _dbSet.FindAsync(id);
     }
@@ -49,4 +49,7 @@ public abstract class BaseRepository<TEntity, TKey> : IBaseRepository<TEntity, T
     {
         return await Task.FromResult(_dbSet.AsNoTracking().Where(predicate).ToList());
     }
+
+    public abstract  Task<TEntity?> GetDetailsByIdAsync(TKey id, CancellationToken cancellationToken = default);
+
 }
