@@ -1,11 +1,12 @@
-﻿using EShop.DAL.Entities;
+﻿using EShop.BLL.DTO.Product;
+using EShop.DAL.Entities;
 using FluentValidation;
 
 namespace EShop.BLL.Validators;
 
-public class ProductValidator : AbstractValidator<Product>
+public class ProductDtoValidator : AbstractValidator<CreateProductDto>
 {
-    public ProductValidator()
+    public ProductDtoValidator()
     {
         RuleFor(product => product.Name)
           .NotEmpty()
