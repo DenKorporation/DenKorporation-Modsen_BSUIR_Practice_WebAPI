@@ -7,18 +7,11 @@ using FluentValidation;
 
 namespace EShop.BLL.Services;
 
-public class ProductService(IMapper mapper, IUnitOfWork unitOfWork,AbstractValidator<CreateProductDto> validator) : IProductService
+public class ProductService(IMapper mapper, IUnitOfWork unitOfWork) : IProductService
 {
     public async Task<ReadProductDto?> CreateProductAsync(CreateProductDto productDto, CancellationToken cancellationToken = default)
     {
         if (productDto == null) throw new ArgumentNullException(nameof(productDto));
-        
-        var validationResult = await validator.ValidateAsync(productDto);
-
-        if (!validationResult.IsValid)
-        { throw new Exception("Product data has not been validated");
-           
-        }
         
         var product = mapper.Map<Product>(productDto);
         var createdProduct = await unitOfWork.Products.AddAsync(product, cancellationToken);
@@ -36,14 +29,6 @@ public class ProductService(IMapper mapper, IUnitOfWork unitOfWork,AbstractValid
     {
         if (productDto == null) throw new ArgumentNullException(nameof(productDto));
 
-
-        var validationResult = await validator.ValidateAsync(productDto);
-
-        if (!validationResult.IsValid)
-        {
-            throw new Exception("Product data has not been validated");
-        }
-        
         var productDb = await unitOfWork.Products.GetByIdAsync(id, cancellationToken);
         if (productDb == null)
         {

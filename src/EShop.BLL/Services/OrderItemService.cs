@@ -9,19 +9,12 @@ using FluentValidation;
 
 namespace EShop.BLL.Services;
 
-public class OrderItemService(IMapper mapper, IUnitOfWork unitOfWork,AbstractValidator<CreateOrderItemDto> validator) : IOrderItemService
+public class OrderItemService(IMapper mapper, IUnitOfWork unitOfWork) : IOrderItemService
 {
     public async Task<ReadOrderItemDto?> CreateOrderItemAsync(CreateOrderItemDto orderItemDto, CancellationToken cancellationToken = default)
     {
         if (orderItemDto == null) throw new ArgumentNullException(nameof(orderItemDto));
         
-        var validationResult = await validator.ValidateAsync(orderItemDto);
-
-        if (!validationResult.IsValid)
-        { throw new Exception("OrderItem data has not been validated");
-           
-        }
-
         var orderItem = mapper.Map<OrderItem>(orderItemDto);
         var createdOrderItem = await unitOfWork.OrderItems.AddAsync(orderItem, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);
@@ -38,13 +31,6 @@ public class OrderItemService(IMapper mapper, IUnitOfWork unitOfWork,AbstractVal
     public async Task<ReadOrderItemDto?> UpdateOrderItemAsync(Guid id, CreateOrderItemDto orderItemDto, CancellationToken cancellationToken = default)
     {
         if (orderItemDto == null) throw new ArgumentNullException(nameof(orderItemDto));
-        
-        var validationResult = await validator.ValidateAsync(orderItemDto);
-
-        if (!validationResult.IsValid)
-        {
-            throw new Exception("OrderItem data has not been validated");
-        }
         
         var orderItem = mapper.Map<OrderItem>(orderItemDto);
         var orderItemDb = await unitOfWork.OrderItems.GetByIdAsync(id, cancellationToken);

@@ -7,19 +7,12 @@ using FluentValidation;
 
 namespace EShop.BLL.Services;
 
-public class OrderService(IMapper mapper, IUnitOfWork unitOfWork,AbstractValidator<CreateOrderDto> validator) : IOrderService
+public class OrderService(IMapper mapper, IUnitOfWork unitOfWork) : IOrderService
 {
     public async Task<ReadOrderDto?> CreateOrderAsync(CreateOrderDto orderDto, CancellationToken cancellationToken = default)
     {
         if (orderDto == null) throw new ArgumentNullException(nameof(orderDto));
         
-        var validationResult = await validator.ValidateAsync(orderDto);
-
-        if (!validationResult.IsValid)
-        { throw new Exception("Order data has not been validated");
-           
-        }
-
         var order = mapper.Map<Order>(orderDto);
         var createdOrder = await unitOfWork.Orders.AddAsync(order, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);
@@ -46,14 +39,7 @@ public class OrderService(IMapper mapper, IUnitOfWork unitOfWork,AbstractValidat
     public async Task<ReadOrderDto?> UpdateOrderAsync(Guid id, CreateOrderDto orderDto, CancellationToken cancellationToken = default)
     {
         if (orderDto == null) throw new ArgumentNullException(nameof(orderDto));
-        
-        var validationResult = await validator.ValidateAsync(orderDto);
-
-        if (!validationResult.IsValid)
-        {
-            throw new Exception("Order data has not been validated");
-        }
-        
+                
         var order = mapper.Map<Order>(orderDto);
         var orderDb = await unitOfWork.Orders.GetByIdAsync(id, cancellationToken);
         if (orderDb == null)
