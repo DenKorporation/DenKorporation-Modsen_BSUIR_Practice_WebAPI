@@ -26,7 +26,7 @@ public class OrderController : ControllerBase
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetOrderByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var order = await _orderService.GetOrderById(id, cancellationToken);
+        var order = await _orderService.GetOrderByIdAsync(id, cancellationToken);
 
         if (order is null)
         {
