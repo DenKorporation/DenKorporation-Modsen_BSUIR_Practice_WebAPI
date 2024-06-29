@@ -1,11 +1,11 @@
-﻿using EShop.DAL.Entities;
+﻿using EShop.BLL.DTO.Category;
 using FluentValidation;
 
 namespace EShop.BLL.Validators;
 
-public class CategoryValidator: AbstractValidator<Category>
+public class CategoryDtoValidator: AbstractValidator<CreateCategoryDto>
 {
-    public CategoryValidator()
+    public CategoryDtoValidator()
     {
         RuleFor(category => category.Name)
           .NotEmpty()

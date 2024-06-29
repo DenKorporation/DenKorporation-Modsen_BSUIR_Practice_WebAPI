@@ -9,10 +9,16 @@ public interface IOrderService
 
     Task<IEnumerable<ReadOrderDto>> GetOrdersAsync(
         CancellationToken cancellationToken = default);
+    
+    Task<ReadOrderDto?> UpdateOrderAsync(
+        Guid id, CreateOrderDto orderDto, CancellationToken cancellationToken = default);
+    
+    Task<bool> DeleteOrderAsync(
+        Guid id, CancellationToken cancellationToken = default);
 
     Task<IEnumerable<ReadOrderDto>> GetUserOrdersAsync(
         Guid userId, CancellationToken cancellationToken = default);
 
-    Task<OrderDetailsDto?> GetOrderById(
+    Task<OrderDetailsDto?> GetOrderByIdAsync(
         Guid id, CancellationToken cancellationToken = default);
 }

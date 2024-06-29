@@ -1,4 +1,4 @@
-﻿namespace EShop.BLL.DTO.User;
+namespace EShop.BLL.DTO.User;
 
 public class LoginUserDto
 {
