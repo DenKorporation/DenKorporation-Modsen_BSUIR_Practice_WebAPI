@@ -1,6 +1,6 @@
 ﻿namespace EShop.BLL.DTO.User;
 
-public class CreateUserDto
+public class RegisterUserDto
 {
     public string Name { get; set; } = null!;
     

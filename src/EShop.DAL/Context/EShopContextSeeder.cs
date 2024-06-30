@@ -1,18 +1,21 @@
 using EShop.DAL.Entities;
 using EShop.DAL.Enums;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 
 namespace EShop.DAL.Context;
 
 public static class EShopContextSeeder
 {
-    public static async Task SeedAsync(EShopContext db, ILogger logger, CancellationToken cancellationToken = default)
+    public static async Task SeedAsync(EShopContext db, ILogger logger, UserManager<User> userManager, CancellationToken cancellationToken = default)
     {
         try
         {
             await db.AddRangeAsync(GetPreconfiguredUsers(), cancellationToken);
             await db.AddRangeAsync(GetPreconfiguredCategories(), cancellationToken);
             await db.SaveChangesAsync(cancellationToken);
+            
+            await AddPasswordToUsers(userManager, cancellationToken);
 
             await db.AddRangeAsync(GetPreconfiguredProducts(), cancellationToken);
             await db.SaveChangesAsync(cancellationToken);
@@ -37,16 +40,24 @@ public static class EShopContextSeeder
             new()
             {
                 Id = new Guid("4C311A99-1F64-4821-829A-7F00371586EB"),
-                Name = "John Doe",
+                UserName = "John Doe",
                 Email = "john@example.com",
             },
             new()
             {
                 Id = new Guid("8F6C91CE-144F-40CA-943E-F42E131DD926"),
-                Name = "Jane Smith",
+                UserName = "Jane Smith",
                 Email = "jane@example.com",
             }
         };
+    }
+
+    private static async Task AddPasswordToUsers(UserManager<User> userManager, CancellationToken cancellationToken = default)
+    {
+        foreach (var user in userManager.Users)
+        {
+            await userManager.AddPasswordAsync(user, "Qwe@12");
+        }
     }
 
     private static IEnumerable<Category> GetPreconfiguredCategories()

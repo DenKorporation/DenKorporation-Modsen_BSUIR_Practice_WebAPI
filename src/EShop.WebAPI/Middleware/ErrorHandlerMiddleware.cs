@@ -1,7 +1,9 @@
 ﻿using System.Net;
 using System.Text.Json;
+using EShop.BLL.Exceptions;
 using EShop.WebAPI.Constants;
 using FluentValidation;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EShop.WebAPI.Middleware;
@@ -27,7 +29,9 @@ public class ErrorHandlerMiddleware
 
             statusCode = exception switch
             {
-                // TODO - add custom exception types
+                LoginFailedException e => e.Code,
+                RegistrationFailedException e => e.Code,
+                NotFoundException e => e.Code,
                 ValidationException e => HttpStatusCode.BadRequest,
                 _ => statusCode
             };
@@ -41,6 +45,14 @@ public class ErrorHandlerMiddleware
             {
                 var errorMessages = validationException.Errors
                     .Select(e => e.ErrorMessage)
+                    .ToArray();
+                errors = string.Join('\n', errorMessages);
+            }
+            
+            if (exception is RegistrationFailedException registrationFailedException)
+            {
+                var errorMessages = (registrationFailedException.Errors ?? Array.Empty<IdentityError>())
+                    .Select(e => e.Description)
                     .ToArray();
                 errors = string.Join('\n', errorMessages);
             }
