@@ -9,19 +9,12 @@ using FluentValidation;
 
 namespace EShop.BLL.Services;
 
-public class CategoryService(IMapper mapper, IUnitOfWork unitOfWork,AbstractValidator<CreateCategoryDto> validator) : ICategoryService
+public class CategoryService(IMapper mapper, IUnitOfWork unitOfWork) : ICategoryService
 {
     public async Task<ReadCategoryDto?> CreateCategoryAsync(CreateCategoryDto categoryDto, CancellationToken cancellationToken = default)
     {
         if (categoryDto == null) throw new ArgumentNullException(nameof(categoryDto));
-        
-        var validationResult = await validator.ValidateAsync(categoryDto);
-
-        if (!validationResult.IsValid)
-        { throw new Exception("Category data has not been validated");
-           
-        }
-        
+          
         var category = mapper.Map<Category>(categoryDto);
         var createdCategory = await unitOfWork.Categories.AddAsync(category, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);
@@ -38,13 +31,6 @@ public class CategoryService(IMapper mapper, IUnitOfWork unitOfWork,AbstractVali
     public async Task<ReadCategoryDto?> UpdateCategoryAsync(Guid id, CreateCategoryDto categoryDto, CancellationToken cancellationToken = default)
     {
         if (categoryDto == null) throw new ArgumentNullException(nameof(categoryDto));
-        
-        var validationResult = await validator.ValidateAsync(categoryDto);
-
-        if (!validationResult.IsValid)
-        {
-            throw new Exception("Category data has not been validated");
-        }
         
         var category = mapper.Map<Category>(categoryDto);
         var categoryDb = await unitOfWork.Categories.GetByIdAsync(id, cancellationToken);
